@@ -16,6 +16,11 @@ RUN dotnet publish -a amd64 --no-restore -o /app
 # เปลี่ยน image เป็นอันที่ 2 คือ run time
 FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
+
+# EXPOSE 8080 จะทำเว็บ ก็อย่าลืมเปิด port
+
 COPY --from=build-first-stage /app .
-USER $APP_UID
-ENTRYPOINT ["./docker-net8"]
+# USER $APP_UID ใช้สำหรับ Kubernetes
+
+# คล้ายๆ CMD แต่ว่า จะบังคับ คำนำหน้cdา ใน string เสมอ
+ENTRYPOINT ["./docker-net8"] 
